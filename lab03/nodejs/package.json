@@ -1,0 +1,12 @@
+{
+  "name": "tw_lab03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main"
+  },
+  "keywords": [],
+  "author": "macsko",
+  "license": "ISC"
+}
