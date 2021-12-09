@@ -1,0 +1,9 @@
+# local idea files
+.idea/
+*.iml
+
+# Maven target
+target/
+
+# outputs
+output*
