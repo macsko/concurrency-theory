@@ -7,3 +7,6 @@ target/
 
 # outputs
 output*
+
+# zip archives
+*.zip
