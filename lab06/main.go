@@ -43,16 +43,16 @@ func parseMatrix(matrixString string) (Matrix, int) {
 
 	matrix := make(Matrix, N)
 	for i := range matrix {
-		matrix[i] = make([]float64, N+1)
+		matrix[i] = make([]float64, N + 1)
 	}
 
-	for i, line := range lines[1 : N+1] {
+	for i, line := range lines[1 : N + 1] {
 		values := strings.Split(line, " ")
 		for j := 0; j < N; j++ {
 			matrix[i][j], _ = strconv.ParseFloat(values[j], 64)
 		}
 	}
-	values := strings.Split(lines[N+1], " ")
+	values := strings.Split(lines[N + 1], " ")
 	for i := 0; i < N; i++ {
 		matrix[i][N], _ = strconv.ParseFloat(values[i], 64)
 	}
@@ -116,7 +116,7 @@ func (matrix Matrix) gaussianElimination() {
 		start = make(chan bool)
 		wg.Add((N - i - 1) * (N - i + 1))
 		for k := i + 1; k < N; k++ {
-			for j := i; j < N+1; j++ {
+			for j := i; j < N + 1; j++ {
 				go matrix.operationB(i, j, k, m, d)
 			}
 		}
@@ -126,7 +126,7 @@ func (matrix Matrix) gaussianElimination() {
 		start = make(chan bool)
 		wg.Add((N - i - 1) * (N - i + 1))
 		for k := i + 1; k < N; k++ {
-			for j := i; j < N+1; j++ {
+			for j := i; j < N + 1; j++ {
 				go matrix.operationC(j, k, d)
 			}
 		}
@@ -139,13 +139,14 @@ func (matrix Matrix) gaussianElimination() {
 func (matrix Matrix) backwardSubstitution() {
 	N := len(matrix)
 	for i := N - 1; i >= 0; i-- {
-		for j := 0; j < N; j++ {
-			if i != j {
-				if j > i {
-					matrix[i][N] -= matrix[i][j] * matrix[j][N]
-				}
-				matrix[i][j] = 0
-			}
+		// Zeroing left side of diagonal
+		for j := 0; j < i; j++ {
+			matrix[i][j] = 0
+		}
+		// Computing i_th result and zeroing right side of diagonal
+		for j := i + 1; j < N; j++ {
+			matrix[i][N] -= matrix[i][j] * matrix[j][N]
+			matrix[i][j] = 0
 		}
 		matrix[i][N] /= matrix[i][i]
 		matrix[i][i] = 1
